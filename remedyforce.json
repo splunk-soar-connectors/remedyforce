@@ -1,12 +1,12 @@
 {
-  "appid": "5ebf131a-43d4-4ebf-b654-858c1484a2ae", 
+  "appid": "5ebf131a-43d4-4ebf-b654-858c1484a2ae",
   "description": "This app allows ticket management on RemedyForce by implementing actions like <b>create ticket</b> and <b>update ticket</b>.",
   "name": "RemedyForce",
   "publisher": "Phantom",
   "type": "ticketing",
   "main_module": "remedyforce_connector.pyc",
-    "app_version": "1.0.7",
-    "utctime_updated": "2017-04-29T02:30:30.000000Z",
+  "app_version": "1.0.8",
+  "utctime_updated": "2017-12-19T23:44:54.000000Z",
   "package_name": "phantom_remedyforce",
   "product_vendor": "BMC Software",
   "product_name": "RemedyForce",
@@ -63,7 +63,9 @@
         {
           "data_path": "action_result.data.*.id",
           "data_type": "string",
-          "contains": [ "remedyforce incident id" ],
+          "contains": [
+            "remedyforce incident id"
+          ],
           "column_name": "ID",
           "column_order": 0
         },
@@ -112,7 +114,9 @@
           "data_type": "string",
           "order": 0,
           "required": true,
-          "contains": [ "remedyforce incident id" ],
+          "contains": [
+            "remedyforce incident id"
+          ],
           "primary": true
         },
         "summary": {
@@ -136,7 +140,9 @@
         {
           "data_path": "action_result.parameter.id",
           "data_type": "string",
-          "contains": ["remedyforce incident id"]
+          "contains": [
+            "remedyforce incident id"
+          ]
         },
         {
           "data_path": "action_result.parameter.summary",
@@ -149,7 +155,9 @@
         {
           "data_path": "action_result.data.*.activity_log.*.sr_id",
           "data_type": "string",
-          "contains": [ "remedyforce incident id" ]
+          "contains": [
+            "remedyforce incident id"
+          ]
         },
         {
           "data_path": "action_result.data.*.activity_log.*.notes",
