@@ -1,206 +1,215 @@
 {
-  "appid": "5ebf131a-43d4-4ebf-b654-858c1484a2ae", 
-  "description": "This app allows ticket management on RemedyForce by implementing actions like <b>create ticket</b> and <b>update ticket</b>.",
-  "name": "RemedyForce",
-  "publisher": "Phantom",
-  "type": "ticketing",
-  "main_module": "remedyforce_connector.pyc",
+    "appid": "5ebf131a-43d4-4ebf-b654-858c1484a2ae",
+    "description": "This app allows ticket management on RemedyForce by implementing actions like <b>create ticket</b> and <b>update ticket</b>.",
+    "name": "RemedyForce",
+    "publisher": "Phantom",
+    "type": "ticketing",
+    "main_module": "remedyforce_connector.pyc",
     "app_version": "1.0.7",
     "utctime_updated": "2017-04-29T02:30:30.000000Z",
-  "package_name": "phantom_remedyforce",
-  "product_vendor": "BMC Software",
-  "product_name": "RemedyForce",
-  "logo": "remedyforce.png",
-  "product_version_regex": ".*",
-  "min_phantom_version": "1.2.256",
-  "license": "Copyright (c) Phantom Cyber Corporation 2016",
-  "configuration": {
-    "username": {
-      "data_type": "string",
-      "order": 0,
-      "description": "Username",
-      "required": true
+    "package_name": "phantom_remedyforce",
+    "product_vendor": "BMC Software",
+    "product_name": "RemedyForce",
+    "logo": "logo_bmcremedyforce.svg",
+    "logo_dark": "logo_bmcremedyforce_dark.svg",
+    "product_version_regex": ".*",
+    "min_phantom_version": "1.2.256",
+    "license": "Copyright (c) Phantom Cyber Corporation 2016",
+    "configuration": {
+        "username": {
+            "data_type": "string",
+            "order": 0,
+            "description": "Username",
+            "required": true
+        },
+        "password": {
+            "data_type": "password",
+            "order": 1,
+            "description": "Password",
+            "required": true
+        }
     },
-    "password": {
-      "data_type": "password",
-      "order": 1,
-      "description": "Password",
-      "required": true
-    }
-  },
-  "actions": [
-    {
-      "action": "test connectivity",
-      "description": "Validates connectivity by retrieving a valid SessionID",
-      "type": "test",
-      "identifier": "test_asset_connectivity",
-      "read_only": true,
-      "parameters": {},
-      "output": [],
-      "versions": "EQ(*)"
-    },
-    {
-      "action": "create ticket",
-      "description": "Create a ticket (incident)",
-      "type": "generic",
-      "identifier": "create_ticket",
-      "read_only": false,
-      "parameters": {
-        "description": {
-          "description": "Description of ticket (incident)",
-          "data_type": "string",
-          "required": true,
-          "order": 0
+    "actions": [
+        {
+            "action": "test connectivity",
+            "description": "Validates connectivity by retrieving a valid SessionID",
+            "type": "test",
+            "identifier": "test_asset_connectivity",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "create ticket",
+            "description": "Create a ticket (incident)",
+            "type": "generic",
+            "identifier": "create_ticket",
+            "read_only": false,
+            "parameters": {
+                "description": {
+                    "description": "Description of ticket (incident)",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 0
+                }
+            },
+            "render": {
+                "width": 12,
+                "title": "Create Ticket",
+                "type": "table",
+                "height": 5
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string",
+                    "contains": [
+                        "remedyforce incident id"
+                    ],
+                    "column_name": "ID",
+                    "column_order": 0
+                },
+                {
+                    "data_path": "action_result.data.*.number",
+                    "data_type": "string",
+                    "column_name": "Number",
+                    "column_order": 1
+                },
+                {
+                    "data_path": "action_result.data.*.created_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.description",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "update ticket",
+            "description": "Attach a note to a ticket (incident)",
+            "type": "generic",
+            "identifier": "update_ticket",
+            "read_only": false,
+            "parameters": {
+                "id": {
+                    "description": "Incident ID",
+                    "data_type": "string",
+                    "order": 0,
+                    "required": true,
+                    "contains": [
+                        "remedyforce incident id"
+                    ],
+                    "primary": true
+                },
+                "summary": {
+                    "description": "Summary of note",
+                    "data_type": "string",
+                    "order": 1,
+                    "required": true
+                },
+                "notes": {
+                    "description": "Full note text",
+                    "data_type": "string",
+                    "order": 2,
+                    "required": false
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.parameter.notes",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.id",
+                    "data_type": "string",
+                    "contains": [
+                        "remedyforce incident id"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.sr_id",
+                    "data_type": "string",
+                    "contains": [
+                        "remedyforce incident id"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.notes",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.submitter",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.created_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.modified_date",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.work_info_type",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.view_access",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.activity_log.*.submitter_username",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric"
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric"
+                }
+            ],
+            "versions": "EQ(*)"
         }
-      },
-      "render": {
-        "width": 12,
-        "title": "Create Ticket",
-        "type": "table",
-        "height": 5
-      },
-      "output": [
-        {
-          "data_path": "action_result.data.*.id",
-          "data_type": "string",
-          "contains": [ "remedyforce incident id" ],
-          "column_name": "ID",
-          "column_order": 0
-        },
-        {
-          "data_path": "action_result.data.*.number",
-          "data_type": "string",
-          "column_name": "Number",
-          "column_order": 1
-        },
-        {
-          "data_path": "action_result.data.*.created_date",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.status",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.message",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.parameter.description",
-          "data_type": "string"
-        },
-        {
-          "data_path": "summary.total_objects",
-          "data_type": "numeric"
-        },
-        {
-          "data_path": "summary.total_objects_successful",
-          "data_type": "numeric"
-        }
-      ],
-      "versions": "EQ(*)"
-    },
-    {
-      "action": "update ticket",
-      "description": "Attach a note to a ticket (incident)",
-      "type": "generic",
-      "identifier": "update_ticket",
-      "read_only": false,
-      "parameters": {
-        "id": {
-          "description": "Incident ID",
-          "data_type": "string",
-          "order": 0,
-          "required": true,
-          "contains": [ "remedyforce incident id" ],
-          "primary": true
-        },
-        "summary": {
-          "description": "Summary of note",
-          "data_type": "string",
-          "order": 1,
-          "required": true
-        },
-        "notes": {
-          "description": "Full note text",
-          "data_type": "string",
-          "order": 2,
-          "required": false
-        }
-      },
-      "output": [
-        {
-          "data_path": "action_result.parameter.notes",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.parameter.id",
-          "data_type": "string",
-          "contains": ["remedyforce incident id"]
-        },
-        {
-          "data_path": "action_result.parameter.summary",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.id",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.sr_id",
-          "data_type": "string",
-          "contains": [ "remedyforce incident id" ]
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.notes",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.summary",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.submitter",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.created_date",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.modified_date",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.work_info_type",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.view_access",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.data.*.activity_log.*.submitter_username",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.status",
-          "data_type": "string"
-        },
-        {
-          "data_path": "action_result.message",
-          "data_type": "string"
-        },
-        {
-          "data_path": "summary.total_objects",
-          "data_type": "numeric"
-        },
-        {
-          "data_path": "summary.total_objects_successful",
-          "data_type": "numeric"
-        }
-      ],
-      "versions": "EQ(*)"
-    }
-  ]
+    ]
 }
