@@ -10,7 +10,9 @@
 # or in part, is forbidden except by express written permission
 # of Phantom Cyber.
 #
-# --REMEDY_JSON_USERNAME = "username"
+# --
+
+REMEDY_JSON_USERNAME = "username"
 REMEDY_JSON_PASSWORD = "password"
 REMEDY_JSON_DESCRIPTION = "description"
 REMEDY_JSON_ID = "id"
