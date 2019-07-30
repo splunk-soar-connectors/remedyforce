@@ -109,7 +109,11 @@ class RemedyForceConnector(BaseConnector):
         body = REMEDY_LOGIN_XML.format(username, password)
 
         # headers and url needed for login request
-        url = "https://login.salesforce.com/services/Soap/u/35.0"
+        if config.get('sandbox', False):
+            url = "https://login.salesforce.com/services/Soap/u/35.0"
+        else:
+            url = "https://test.salesforce.com/services/Soap/u/35.0"
+
         headers = {'Content-Type': 'text/xml;charset=UTF-8',
                    'SOAPAction': 'Login'}
 
