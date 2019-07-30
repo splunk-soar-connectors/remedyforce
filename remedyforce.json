@@ -26,6 +26,13 @@
       "order": 1,
       "description": "Password",
       "required": true
+    },
+    "sandbox": {
+      "data_type": "boolean",
+      "order": 2,
+      "description": "Check to use sandbox environment",
+      "default": false,
+      "required": false
     }
   },
   "actions": [
