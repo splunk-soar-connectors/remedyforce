@@ -1,16 +1,10 @@
 # --
 # File: remedyforce/remedyforce_connector.py
 #
-# Copyright (c) Phantom Cyber Corporation, 2016-2018
+# Copyright (c) 2016-2021 Splunk Inc.
 #
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
-#
-# --
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 
 # Phantom imports
 import phantom.app as phantom
@@ -53,16 +47,17 @@ class RemedyForceConnector(BaseConnector):
 
         # handle the error in case the caller specified a non-existant method
         if (not request_func):
-            action_result.set_status(phantom.APP_ERROR, REMEDY_ERR_API_UNSUPPORTED_METHOD, method=method)
+            action_result.set_status(
+                phantom.APP_ERROR, REMEDY_ERR_API_UNSUPPORTED_METHOD, method=method)
 
         # Make the call
         try:
             r = request_func(base_url + endpoint,
-                    json=body,
-                    headers=headers,
-                    # auth=(self._username, self._key), # Don't need to authenticate in this manner
-                    # verify=config[phantom.APP_JSON_VERIFY],
-                    params=params)  # uri parameters if any
+                             json=body,
+                             headers=headers,
+                             # auth=(self._username, self._key), # Don't need to authenticate in this manner
+                             # verify=config[phantom.APP_JSON_VERIFY],
+                             params=params)  # uri parameters if any
         except Exception as e:
             return (action_result.set_status(phantom.APP_ERROR, REMEDY_ERR_SERVER_CONNECTION, e), resp_json)
 
@@ -94,8 +89,8 @@ class RemedyForceConnector(BaseConnector):
         details = json.dumps(resp_json).replace('{', '').replace('}', '')
 
         return (action_result.set_status(phantom.APP_ERROR,
-            REMEDY_ERR_FROM_SERVER.format(status=r.status_code, detail=details)),
-            resp_json)
+                                         REMEDY_ERR_FROM_SERVER.format(status=r.status_code, detail=details)),
+                resp_json)
 
     def _get_session_id(self):
         """ This needs to be done with a SOAP request
@@ -126,12 +121,14 @@ class RemedyForceConnector(BaseConnector):
             return self.set_status_save_progress(phantom.APP_ERROR, e)
 
         try:
-            session_id = re.search('<sessionId>(.*)</sessionId>', r.text).groups()[0]
+            session_id = re.search(
+                '<sessionId>(.*)</sessionId>', r.text).groups()[0]
             self._headers['Authorization'] = 'Bearer {}'.format(session_id)
             return self.set_status_save_progress(phantom.APP_SUCCESS, "Retrieved SessionID")
         except:
             try:  # Invalid Credentials
-                fs = re.search('<faultstring>(.*)</faultstring>', r.text).groups()[0]
+                fs = re.search('<faultstring>(.*)</faultstring>',
+                               r.text).groups()[0]
                 return self.set_status_save_progress(phantom.APP_ERROR, fs)
             except Exception as e:  # Something else went wrong
                 return self.set_status_save_progress(phantom.APP_ERROR, e)
@@ -140,12 +137,15 @@ class RemedyForceConnector(BaseConnector):
         """ See if connection is valid and save SessionID """
 
         ret_val = self._get_session_id()
+        self.save_progress("HAHAHA ===> {}".format(ret_val))
+        self.debug_print("HAHAHA ===> {}".format(ret_val))
 
         if (phantom.is_fail(ret_val)):
             return self.set_status(phantom.APP_ERROR)
 
         # Get version to confirm that connections works
-        ret_val, json_resp = self._make_rest_call(ENDPOINT_VERSION, action_result)
+        ret_val, json_resp = self._make_rest_call(
+            ENDPOINT_VERSION, action_result)
         if (not phantom.is_fail(ret_val) and json_resp[RESP_SUCCESS]):
             # We need to conver the result string to proper json
             result = json.loads(json_resp[RESP_RESULT])
@@ -207,7 +207,8 @@ class RemedyForceConnector(BaseConnector):
 
         body = {'ActivityLog': [ActivityLog]}
 
-        endpoint_note = ENDPOINT_SERVICE + "/{}/clientnote".format(param[REMEDY_JSON_ID])
+        endpoint_note = ENDPOINT_SERVICE + \
+            "/{}/clientnote".format(param[REMEDY_JSON_ID])
 
         ret_val, json_resp = self._make_rest_call(endpoint_note, action_result,
                                                   body=body, method="post")
@@ -232,8 +233,7 @@ class RemedyForceConnector(BaseConnector):
         if isinstance(x, list):
             return [self._lowercase_keys(v) for v in x]
         elif isinstance(x, dict):
-            # return dict((k.lower(), self._lowercase_keys(v)) for k, v in x.iteritems())
-            return dict((re.sub('(?!^)([A-Z]+)', r'_\1', k).lower(), self._lowercase_keys(v)) for k, v in x.iteritems())
+            return dict((re.sub('(?!^)([A-Z]+)', r'_\1', k).lower(), self._lowercase_keys(v)) for k, v in x.items())
         else:
             return x
 
@@ -250,6 +250,7 @@ class RemedyForceConnector(BaseConnector):
             ret_val = self._update_ticket(param)
 
         return ret_val
+
 
 if __name__ == '__main__':
     # Imports
@@ -277,6 +278,6 @@ if __name__ == '__main__':
         ret_val = connector._handle_action(json.dumps(in_json), None)
 
         # Dump the return value
-        print ret_val
+        print(ret_val)
 
     exit(0)
