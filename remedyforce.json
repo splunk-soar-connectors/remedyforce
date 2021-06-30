@@ -1,6 +1,6 @@
 {
   "appid": "5ebf131a-43d4-4ebf-b654-858c1484a2ae",
-  "description": "This app allows ticket management on RemedyForce by implementing actions like create ticket and update ticket",
+  "description": "This app allows ticket management on RemedyForce by implementing generic actions",
   "name": "RemedyForce",
   "publisher": "Splunk",
   "type": "ticketing",
