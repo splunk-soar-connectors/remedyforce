@@ -1,5 +1,5 @@
 # --
-# File: remedyforce/remedyforce_connector.py
+# File: remedyforce_connector.py
 #
 # Copyright (c) 2016-2021 Splunk Inc.
 #
