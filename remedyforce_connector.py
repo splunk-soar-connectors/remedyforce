@@ -137,8 +137,6 @@ class RemedyForceConnector(BaseConnector):
         """ See if connection is valid and save SessionID """
 
         ret_val = self._get_session_id()
-        self.save_progress("HAHAHA ===> {}".format(ret_val))
-        self.debug_print("HAHAHA ===> {}".format(ret_val))
 
         if (phantom.is_fail(ret_val)):
             return self.set_status(phantom.APP_ERROR)
