@@ -46,7 +46,7 @@ class RemedyForceConnector(BaseConnector):
         request_func = getattr(requests, method)
 
         # handle the error in case the caller specified a non-existant method
-        if (not request_func):
+        if not request_func:
             action_result.set_status(
                 phantom.APP_ERROR, REMEDY_ERR_API_UNSUPPORTED_METHOD, method=method)
 
@@ -79,7 +79,7 @@ class RemedyForceConnector(BaseConnector):
         #     return (phantom.APP_SUCCESS, resp_json)
 
         # Handle/process any errors that we get back from the device
-        if (200 <= r.status_code <= 399):
+        if 200 <= r.status_code <= 399:
             # Success
             return (phantom.APP_SUCCESS, resp_json)
 
@@ -138,13 +138,13 @@ class RemedyForceConnector(BaseConnector):
 
         ret_val = self._get_session_id()
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return self.set_status(phantom.APP_ERROR)
 
         # Get version to confirm that connections works
         ret_val, json_resp = self._make_rest_call(
             ENDPOINT_VERSION, action_result)
-        if (not phantom.is_fail(ret_val) and json_resp[RESP_SUCCESS]):
+        if not phantom.is_fail(ret_val) and json_resp[RESP_SUCCESS]:
             # We need to conver the result string to proper json
             result = json.loads(json_resp[RESP_RESULT])
             self.save_progress("RemedyForce version {}", result[RESP_VERSION])
@@ -158,7 +158,7 @@ class RemedyForceConnector(BaseConnector):
         self.save_progress("Testing connectivity")
 
         ret_val = self._validate_connection(action_result)
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return self.set_status_save_progress(phantom.APP_ERROR, "Connectivity test failed")
 
         return self.set_status_save_progress(phantom.APP_SUCCESS, "Connectivity test succeeded")
@@ -167,7 +167,7 @@ class RemedyForceConnector(BaseConnector):
 
         action_result = self.add_action_result(ActionResult(dict(param)))
         ret_val = self._validate_connection(action_result)
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return ret_val
 
         body = {'Description': param[REMEDY_JSON_DESCRIPTION],
@@ -184,7 +184,7 @@ class RemedyForceConnector(BaseConnector):
             return action_result.get_status()
 
         # Some failure is indicated in the response
-        if (not json_resp[RESP_SUCCESS]):
+        if not json_resp[RESP_SUCCESS]:
             self.set_status(phantom.APP_ERROR)
             return action_result.set_status(phantom.APP_ERROR, json_resp[RESP_MESSAGE])
 
@@ -197,7 +197,7 @@ class RemedyForceConnector(BaseConnector):
 
         action_result = self.add_action_result(ActionResult(dict(param)))
         ret_val = self._validate_connection(action_result)
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return ret_val
 
         ActivityLog = {'Summary': param[REMEDY_JSON_SUMMARY],
@@ -217,7 +217,7 @@ class RemedyForceConnector(BaseConnector):
             return action_result.get_status()
 
         # Some failure is indicated in the response
-        if (not json_resp[RESP_SUCCESS]):
+        if not json_resp[RESP_SUCCESS]:
             self.set_status(phantom.APP_ERROR)
             return action_result.set_status(phantom.APP_ERROR, json_resp[RESP_MESSAGE])
 
@@ -240,11 +240,11 @@ class RemedyForceConnector(BaseConnector):
         action = self.get_action_identifier()
         ret_val = phantom.APP_SUCCESS
 
-        if (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY):
+        if action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             ret_val = self._test_connectivity(param)
-        elif (action == self.ACTION_ID_CREATE_TICKET):
+        elif action == self.ACTION_ID_CREATE_TICKET:
             ret_val = self._create_ticket(param)
-        elif (action == self.ACTION_ID_UPDATE_TICKET):
+        elif action == self.ACTION_ID_UPDATE_TICKET:
             ret_val = self._update_ticket(param)
 
         return ret_val

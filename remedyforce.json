@@ -16,6 +16,9 @@
   "min_phantom_version": "4.9.39220",
   "python_version": "3",
   "license": "Copyright (c) 2016-2021 Splunk Inc.",
+  "latest_tested_versions": [
+    "RemedyForce v202101.82.35"
+  ],
   "configuration": {
       "username": {
           "data_type": "string",
