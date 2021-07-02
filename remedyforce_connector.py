@@ -104,7 +104,11 @@ class RemedyForceConnector(BaseConnector):
         body = REMEDY_LOGIN_XML.format(username, password)
 
         # headers and url needed for login request
-        if config.get('sandbox', False):
+        # If you are integrating with the Salesforce Production organization,
+        # Endpoint for login call is https://login.salesforce.com/services/Soap/u/35.0  and
+        # when you are integrating with the Salesforce Sandbox organization,
+        # the Endpoint for login call is https://test.salesforce.com/services/Soap/u/35.0
+        if not config.get('sandbox', False):
             url = "https://login.salesforce.com/services/Soap/u/35.0"
         else:
             url = "https://test.salesforce.com/services/Soap/u/35.0"
