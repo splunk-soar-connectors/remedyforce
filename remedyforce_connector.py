@@ -28,6 +28,7 @@ class RemedyForceConnector(BaseConnector):
     def __init__(self):
 
         self._headers = {}  # Used to store auth
+        self._base_url = None
 
         super(RemedyForceConnector, self).__init__()
         return
@@ -36,9 +37,9 @@ class RemedyForceConnector(BaseConnector):
         """ Function that makes the REST call to the device,
             generic function that can be called from various action handlers
         """
+
         # Create the headers
         headers.update(self._headers)
-        base_url = "https://na30.salesforce.com/services/apexrest/BMCServiceDesk/1.0/"
 
         resp_json = None
 
@@ -52,7 +53,7 @@ class RemedyForceConnector(BaseConnector):
 
         # Make the call
         try:
-            r = request_func(base_url + endpoint,
+            r = request_func(self._base_url + endpoint,
                              json=body,
                              headers=headers,
                              # auth=(self._username, self._key), # Don't need to authenticate in this manner
@@ -110,8 +111,10 @@ class RemedyForceConnector(BaseConnector):
         # the Endpoint for login call is https://test.salesforce.com/services/Soap/u/35.0
         if not config.get('sandbox', False):
             url = "https://login.salesforce.com/services/Soap/u/35.0"
+            self._base_url = "https://na64.salesforce.com/services/apexrest/BMCServiceDesk/1.0/"
         else:
             url = "https://test.salesforce.com/services/Soap/u/35.0"
+            self._base_url = "https://cs195.salesforce.com/services/apexrest/BMCServiceDesk/1.0/"
 
         headers = {'Content-Type': 'text/xml;charset=UTF-8',
                    'SOAPAction': 'Login'}
@@ -211,7 +214,7 @@ class RemedyForceConnector(BaseConnector):
 
         endpoint_note = ENDPOINT_SERVICE + \
             "/{}/clientnote".format(param[REMEDY_JSON_ID])
-
+        
         ret_val, json_resp = self._make_rest_call(endpoint_note, action_result,
                                                   body=body, method="post")
 
