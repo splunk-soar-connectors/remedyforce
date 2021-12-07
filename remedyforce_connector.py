@@ -14,18 +14,16 @@
 # and limitations under the License.
 #
 #
-# Phantom imports
-import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-
-# Local imports
-from remedyforce_consts import *
-
-import requests
-import simplejson as json
 import re
 from datetime import datetime
+
+import phantom.app as phantom
+import requests
+import simplejson as json
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
+from remedyforce_consts import *
 
 
 class RemedyForceConnector(BaseConnector):
@@ -268,6 +266,7 @@ class RemedyForceConnector(BaseConnector):
 if __name__ == '__main__':
     # Imports
     import sys
+
     import pudb
 
     # Breakpoint at runtime
