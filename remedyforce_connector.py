@@ -16,6 +16,7 @@
 #
 import re
 from datetime import datetime
+from sys import exit
 
 import phantom.app as phantom
 import requests
@@ -39,7 +40,7 @@ class RemedyForceConnector(BaseConnector):
         super(RemedyForceConnector, self).__init__()
         return
 
-    def _make_rest_call(self, endpoint, action_result, headers={}, params=None, body=None, method="get"):
+    def _make_rest_call(self, endpoint, action_result, headers=None, params=None, body=None, method="get"):
         """ Function that makes the REST call to the device,
             generic function that can be called from various action handlers
         """
@@ -129,7 +130,7 @@ class RemedyForceConnector(BaseConnector):
 
         # Thankfully this is the only SOAP request we need to make
         try:
-            r = requests.post(url, data=body, headers=headers)
+            r = requests.post(url, data=body, headers=headers, timeout=REMEDY_DEFAULT_TIMEOUT)
         except Exception as e:
             return self.set_status_save_progress(phantom.APP_ERROR, e)
 

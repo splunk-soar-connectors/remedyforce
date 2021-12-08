@@ -24,6 +24,8 @@ REMEDY_ERR_SERVER_CONNECTION = "Connection failed"
 REMEDY_ERR_FROM_SERVER = "API failed, Status code: {status}, Detail: {detail}"
 REMEDY_ERR_JSON_PARSE = "Unable to parse the fields parameter into a dictionary"
 
+REMEDY_DEFAULT_TIMEOUT = 30
+
 ENDPOINT_VERSION = "ServiceUtil/Version"
 ENDPOINT_INCIDENT = "Incident"
 ENDPOINT_SERVICE = "ServiceRequest"
