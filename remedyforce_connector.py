@@ -14,18 +14,16 @@
 # and limitations under the License.
 #
 #
-# Phantom imports
-import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-
-# Local imports
-from remedyforce_consts import *
-
-import requests
-import simplejson as json
 import re
 from datetime import datetime
+
+import phantom.app as phantom
+import requests
+import simplejson as json
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
+from remedyforce_consts import *
 
 
 class RemedyForceConnector(BaseConnector):
@@ -222,7 +220,7 @@ class RemedyForceConnector(BaseConnector):
 
         endpoint_note = ENDPOINT_SERVICE + \
             "/{}/clientnote".format(param[REMEDY_JSON_ID])
-        
+
         ret_val, json_resp = self._make_rest_call(endpoint_note, action_result,
                                                   body=body, method="post")
 
@@ -268,6 +266,7 @@ class RemedyForceConnector(BaseConnector):
 if __name__ == '__main__':
     # Imports
     import sys
+
     import pudb
 
     # Breakpoint at runtime
