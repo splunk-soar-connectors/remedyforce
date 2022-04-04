@@ -2,7 +2,7 @@
 # RemedyForce
 
 Publisher: Splunk  
-Connector Version: 2\.0\.2  
+Connector Version: 2\.0\.3  
 Product Vendor: BMC Software  
 Product Name: RemedyForce  
 Product Version Supported (regex): "\.\*"  
