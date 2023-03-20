@@ -1,6 +1,6 @@
 # File: remedyforce_connector.py
 #
-# Copyright (c) 2016-2021 Splunk Inc.
+# Copyright (c) 2016-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ from remedyforce_consts import *
 
 class RemedyForceConnector(BaseConnector):
 
+    ACTION_ID_TO_TEST_CONNECTIVITY = "test_connectivity"
     ACTION_ID_CREATE_TICKET = "create_ticket"
     ACTION_ID_UPDATE_TICKET = "update_ticket"
 
@@ -46,8 +47,10 @@ class RemedyForceConnector(BaseConnector):
         """
 
         # Create the headers
-        headers.update(self._headers)
+        if not headers:
+            headers = {}
 
+        headers.update(self._headers)
         resp_json = None
 
         # get or post or put, whatever the caller asked us to use, if not specified the default will be 'get'
@@ -56,7 +59,7 @@ class RemedyForceConnector(BaseConnector):
         # handle the error in case the caller specified a non-existant method
         if not request_func:
             action_result.set_status(
-                phantom.APP_ERROR, REMEDY_ERR_API_UNSUPPORTED_METHOD, method=method)
+                phantom.APP_ERROR, REMEDY_ERROR_API_UNSUPPORTED_METHOD, method=method)
 
         # Make the call
         try:
@@ -67,7 +70,7 @@ class RemedyForceConnector(BaseConnector):
                              # verify=config[phantom.APP_JSON_VERIFY],
                              params=params)  # uri parameters if any
         except Exception as e:
-            return (action_result.set_status(phantom.APP_ERROR, REMEDY_ERR_SERVER_CONNECTION, e), resp_json)
+            return (action_result.set_status(phantom.APP_ERROR, REMEDY_ERROR_SERVER_CONNECTION, e), resp_json)
 
         # self.debug_print('REST url: {0}'.format(r.url))
 
@@ -77,7 +80,7 @@ class RemedyForceConnector(BaseConnector):
             resp_json = r.json()
         except Exception as e:
             # r.text is guaranteed to be NON None, it will be empty, but not None
-            msg_string = REMEDY_ERR_JSON_PARSE.format(raw_text=r.text)
+            msg_string = REMEDY_ERROR_JSON_PARSE.format(raw_text=r.text)
             return (action_result.set_status(phantom.APP_ERROR, msg_string, e), resp_json)
 
         # Handle any special HTTP error codes here, many devices return an HTTP error code like 204.
@@ -97,7 +100,7 @@ class RemedyForceConnector(BaseConnector):
         details = json.dumps(resp_json).replace('{', '').replace('}', '')
 
         return (action_result.set_status(phantom.APP_ERROR,
-                                         REMEDY_ERR_FROM_SERVER.format(status=r.status_code, detail=details)),
+                                         REMEDY_ERROR_FROM_SERVER.format(status=r.status_code, detail=details)),
                 resp_json)
 
     def _get_session_id(self):
@@ -132,20 +135,21 @@ class RemedyForceConnector(BaseConnector):
         try:
             r = requests.post(url, data=body, headers=headers, timeout=REMEDY_DEFAULT_TIMEOUT)
         except Exception as e:
-            return self.set_status_save_progress(phantom.APP_ERROR, e)
+            return self.set_status(phantom.APP_ERROR, e)
 
         try:
             session_id = re.search(
                 '<sessionId>(.*)</sessionId>', r.text).groups()[0]
             self._headers['Authorization'] = 'Bearer {}'.format(session_id)
-            return self.set_status_save_progress(phantom.APP_SUCCESS, "Retrieved SessionID")
+            self.save_progress("Retrieved SessionID")
+            return self.set_status(phantom.APP_SUCCESS)
         except:
             try:  # Invalid Credentials
                 fs = re.search('<faultstring>(.*)</faultstring>',
                                r.text).groups()[0]
-                return self.set_status_save_progress(phantom.APP_ERROR, fs)
+                return self.set_status(phantom.APP_ERROR, fs)
             except Exception as e:  # Something else went wrong
-                return self.set_status_save_progress(phantom.APP_ERROR, e)
+                return self.set_status(phantom.APP_ERROR, e)
 
     def _validate_connection(self, action_result):
         """ See if connection is valid and save SessionID """
@@ -173,9 +177,11 @@ class RemedyForceConnector(BaseConnector):
 
         ret_val = self._validate_connection(action_result)
         if phantom.is_fail(ret_val):
-            return self.set_status_save_progress(phantom.APP_ERROR, "Connectivity test failed")
+            self.save_progress(REMEDY_ERROR_TEST_CONNECTIVITY)
+            return self.set_status(phantom.APP_ERROR)
 
-        return self.set_status_save_progress(phantom.APP_SUCCESS, "Connectivity test succeeded")
+        self.save_progress(REMEDY_SUCCESS_TEST_CONNECTIVITY)
+        return self.set_status(phantom.APP_SUCCESS)
 
     def _create_ticket(self, param):
 
@@ -254,7 +260,7 @@ class RemedyForceConnector(BaseConnector):
         action = self.get_action_identifier()
         ret_val = phantom.APP_SUCCESS
 
-        if action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
+        if action == self.ACTION_ID_TO_TEST_CONNECTIVITY:
             ret_val = self._test_connectivity(param)
         elif action == self.ACTION_ID_CREATE_TICKET:
             ret_val = self._create_ticket(param)
