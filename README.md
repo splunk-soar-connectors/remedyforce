@@ -2,11 +2,11 @@
 # RemedyForce
 
 Publisher: Splunk  
-Connector Version: 2\.0\.3  
+Connector Version: 3.0.0  
 Product Vendor: BMC Software  
 Product Name: RemedyForce  
-Product Version Supported (regex): "\.\*"  
-Minimum Product Version: 4\.9\.39220  
+Product Version Supported (regex): ".\*"  
+Minimum Product Version: 5.5.0  
 
 This app allows ticket management on RemedyForce by implementing generic actions
 
@@ -21,8 +21,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions  
 [test connectivity](#action-test-connectivity) - Validates connectivity by retrieving a valid SessionID  
-[create ticket](#action-create-ticket) - Create a ticket \(incident\)  
-[update ticket](#action-update-ticket) - Attach a note to a ticket \(incident\)  
+[create ticket](#action-create-ticket) - Create a ticket (incident)  
+[update ticket](#action-update-ticket) - Attach a note to a ticket (incident)  
 
 ## action: 'test connectivity'
 Validates connectivity by retrieving a valid SessionID
@@ -37,7 +37,7 @@ No parameters are required for this action
 No Output  
 
 ## action: 'create ticket'
-Create a ticket \(incident\)
+Create a ticket (incident)
 
 Type: **generic**  
 Read only: **False**
@@ -45,22 +45,21 @@ Read only: **False**
 #### Action Parameters
 PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 --------- | -------- | ----------- | ---- | --------
-**description** |  required  | Description of ticket \(incident\) | string | 
+**description** |  required  | Description of ticket (incident) | string | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.data\.\*\.id | string |  `remedyforce incident id` 
-action\_result\.data\.\*\.number | string | 
-action\_result\.data\.\*\.created\_date | string | 
-action\_result\.status | string | 
-action\_result\.message | string | 
-action\_result\.parameter\.description | string | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric |   
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.data.\*.id | string |  `remedyforce incident id`  |   a2U8Y546902dxTkWAI 
+action_result.data.\*.number | string |  |   00000033 
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully created ticket (incident) 
+action_result.parameter.description | string |  |   This is test description 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1   
 
 ## action: 'update ticket'
-Attach a note to a ticket \(incident\)
+Attach a note to a ticket (incident)
 
 Type: **generic**  
 Read only: **False**
@@ -73,24 +72,24 @@ PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
 **notes** |  optional  | Full note text | string | 
 
 #### Action Output
-DATA PATH | TYPE | CONTAINS
---------- | ---- | --------
-action\_result\.parameter\.notes | string | 
-action\_result\.parameter\.id | string |  `remedyforce incident id` 
-action\_result\.parameter\.summary | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.id | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.sr\_id | string |  `remedyforce incident id` 
-action\_result\.data\.\*\.activity\_log\.\*\.notes | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.summary | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.submitter | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.created\_date | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.modified\_date | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.work\_info\_type | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.view\_access | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.submitter\_username | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.submitter\_id | string | 
-action\_result\.data\.\*\.activity\_log\.\*\.submitter\_user\_img\_url | string | 
-action\_result\.status | string | 
-action\_result\.message | string | 
-summary\.total\_objects | numeric | 
-summary\.total\_objects\_successful | numeric | 
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.parameter.notes | string |  |   This is test note 
+action_result.parameter.id | string |  `remedyforce incident id`  |   a2U5e0000005nRKEAY 
+action_result.parameter.summary | string |  |   This is test summary 
+action_result.data.\*.activity_log.\*.id | string |  |   a2N8Y000004mTbiTAE 
+action_result.data.\*.activity_log.\*.sr_id | string |  `remedyforce incident id`  |   a2U8Y006672dxTkTAI 
+action_result.data.\*.activity_log.\*.notes | string |  |   This is a test note test@bmcremedyforce.com 3/16/2023 10:39 PM 
+action_result.data.\*.activity_log.\*.summary | string |  |   Test summary 
+action_result.data.\*.activity_log.\*.submitter | string |  |  
+action_result.data.\*.activity_log.\*.created_date | string |  |  
+action_result.data.\*.activity_log.\*.modified_date | string |  |  
+action_result.data.\*.activity_log.\*.work_info_type | string |  |  
+action_result.data.\*.activity_log.\*.view_access | string |  |  
+action_result.data.\*.activity_log.\*.submitter_username | string |  |  
+action_result.data.\*.activity_log.\*.submitter_id | string |  |  
+action_result.data.\*.activity_log.\*.submitter_user_img_url | string |  |  
+action_result.status | string |  |   success  failed 
+action_result.message | string |  |   Successfully added note to ticket (incident) 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1 
