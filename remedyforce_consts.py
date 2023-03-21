@@ -1,6 +1,6 @@
 # File: remedyforce_consts.py
 #
-# Copyright (c) 2016-2021 Splunk Inc.
+# Copyright (c) 2016-2023 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,18 @@
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 REMEDY_JSON_USERNAME = "username"
-REMEDY_JSON_PASSWORD = "password"
+REMEDY_JSON_PASSWORD = "password"  # pragma: allowlist secret
 REMEDY_JSON_DESCRIPTION = "description"
 REMEDY_JSON_ID = "id"
 REMEDY_JSON_SUMMARY = "summary"
 REMEDY_JSON_NOTES = "notes"
 
-REMEDY_ERR_API_UNSUPPORTED_METHOD = "Unsupported method"
-REMEDY_ERR_SERVER_CONNECTION = "Connection failed"
-REMEDY_ERR_FROM_SERVER = "API failed, Status code: {status}, Detail: {detail}"
-REMEDY_ERR_JSON_PARSE = "Unable to parse the fields parameter into a dictionary"
+REMEDY_SUCCESS_TEST_CONNECTIVITY = "Test Connectivity Passed"
+REMEDY_ERROR_TEST_CONNECTIVITY = "Test Connectivity Failed"
+REMEDY_ERROR_API_UNSUPPORTED_METHOD = "Unsupported method"
+REMEDY_ERROR_SERVER_CONNECTION = "Connection failed"
+REMEDY_ERROR_FROM_SERVER = "API failed, Status code: {status}, Detail: {detail}"
+REMEDY_ERROR_JSON_PARSE = "Unable to parse the fields parameter into a dictionary"
 
 REMEDY_DEFAULT_TIMEOUT = 30
 

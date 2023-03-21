@@ -5,7 +5,7 @@
     "publisher": "Splunk",
     "type": "ticketing",
     "main_module": "remedyforce_connector.py",
-    "app_version": "2.0.3",
+    "app_version": "3.0.0",
     "utctime_updated": "2022-01-07T22:41:29.000000Z",
     "package_name": "phantom_remedyforce",
     "product_vendor": "BMC Software",
@@ -13,12 +13,12 @@
     "logo": "logo_bmcremedyforce.svg",
     "logo_dark": "logo_bmcremedyforce_dark.svg",
     "product_version_regex": ".*",
-    "min_phantom_version": "4.9.39220",
+    "min_phantom_version": "5.5.0",
     "python_version": "3",
     "fips_compliant": true,
-    "license": "Copyright (c) 2016-2021 Splunk Inc.",
+    "license": "Copyright (c) 2016-2023 Splunk Inc.",
     "latest_tested_versions": [
-        "RemedyForce v202101.82.35"
+        "RemedyForce v202301.28.0"
     ],
     "configuration": {
         "username": {
@@ -45,7 +45,7 @@
             "action": "test connectivity",
             "description": "Validates connectivity by retrieving a valid SessionID",
             "type": "test",
-            "identifier": "test_asset_connectivity",
+            "identifier": "test_connectivity",
             "read_only": true,
             "parameters": {},
             "output": [],
@@ -79,17 +79,19 @@
                         "remedyforce incident id"
                     ],
                     "column_name": "ID",
-                    "column_order": 0
+                    "column_order": 0,
+                    "example_values": [
+                        "a2U8Y546902dxTkWAI"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.number",
                     "data_type": "string",
                     "column_name": "Number",
-                    "column_order": 1
-                },
-                {
-                    "data_path": "action_result.data.*.created_date",
-                    "data_type": "string"
+                    "column_order": 1,
+                    "example_values": [
+                        "00000033"
+                    ]
                 },
                 {
                     "data_path": "action_result.status",
@@ -108,7 +110,10 @@
                 },
                 {
                     "data_path": "action_result.parameter.description",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "This is test description"
+                    ]
                 },
                 {
                     "data_path": "summary.total_objects",
@@ -159,7 +164,10 @@
             "output": [
                 {
                     "data_path": "action_result.parameter.notes",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "This is test note"
+                    ]
                 },
                 {
                     "data_path": "action_result.parameter.id",
@@ -173,26 +181,41 @@
                 },
                 {
                     "data_path": "action_result.parameter.summary",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "This is test summary"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.activity_log.*.id",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "a2N8Y000004mTbiTAE"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.activity_log.*.sr_id",
                     "data_type": "string",
                     "contains": [
                         "remedyforce incident id"
+                    ],
+                    "example_values": [
+                        "a2U8Y006672dxTkTAI"
                     ]
                 },
                 {
                     "data_path": "action_result.data.*.activity_log.*.notes",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "This is a test note test@bmcremedyforce.com 3/16/2023 10:39 PM"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.activity_log.*.summary",
-                    "data_type": "string"
+                    "data_type": "string",
+                    "example_values": [
+                        "Test summary"
+                    ]
                 },
                 {
                     "data_path": "action_result.data.*.activity_log.*.submitter",
@@ -263,27 +286,55 @@
         "wheel": [
             {
                 "module": "certifi",
-                "input_file": "wheels/certifi-2021.10.8-py2.py3-none-any.whl"
+                "input_file": "wheels/py3/certifi-2022.12.7-py3-none-any.whl"
             },
             {
                 "module": "chardet",
-                "input_file": "wheels/chardet-3.0.4-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/chardet-3.0.4-py2.py3-none-any.whl"
             },
             {
                 "module": "idna",
-                "input_file": "wheels/idna-2.10-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/idna-2.10-py2.py3-none-any.whl"
             },
             {
                 "module": "requests",
-                "input_file": "wheels/requests-2.25.0-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/requests-2.25.0-py2.py3-none-any.whl"
             },
             {
                 "module": "simplejson",
-                "input_file": "wheels/simplejson-3.17.2-cp36-cp36m-manylinux2010_x86_64.manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+                "input_file": "wheels/py36/simplejson-3.17.2-cp36-cp36m-manylinux2010_x86_64.manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
             },
             {
                 "module": "urllib3",
-                "input_file": "wheels/urllib3-1.26.7-py2.py3-none-any.whl"
+                "input_file": "wheels/shared/urllib3-1.26.15-py2.py3-none-any.whl"
+            }
+        ]
+    },
+    "pip39_dependencies": {
+        "wheel": [
+            {
+                "module": "certifi",
+                "input_file": "wheels/py3/certifi-2022.12.7-py3-none-any.whl"
+            },
+            {
+                "module": "chardet",
+                "input_file": "wheels/shared/chardet-3.0.4-py2.py3-none-any.whl"
+            },
+            {
+                "module": "idna",
+                "input_file": "wheels/shared/idna-2.10-py2.py3-none-any.whl"
+            },
+            {
+                "module": "requests",
+                "input_file": "wheels/shared/requests-2.25.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "simplejson",
+                "input_file": "wheels/py39/simplejson-3.17.2-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+            },
+            {
+                "module": "urllib3",
+                "input_file": "wheels/shared/urllib3-1.26.15-py2.py3-none-any.whl"
             }
         ]
     }
