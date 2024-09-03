@@ -1,6 +1,6 @@
 # File: remedyforce_consts.py
 #
-# Copyright (c) 2016-2021 Splunk Inc.
+# Copyright (c) 2016-2024 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
 REMEDY_JSON_USERNAME = "username"
-REMEDY_JSON_PASSWORD = "password"
+REMEDY_JSON_PASSWORD = "password"  # pragma: allowlist secret
 REMEDY_JSON_DESCRIPTION = "description"
 REMEDY_JSON_ID = "id"
 REMEDY_JSON_SUMMARY = "summary"
