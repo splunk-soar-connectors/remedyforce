@@ -1,23 +1,30 @@
-# --
 # File: remedyforce_connector.py
 #
-# Copyright (c) 2016-2021 Splunk Inc.
+# Copyright (c) 2016-2024 Splunk Inc.
 #
-# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
-# without a valid written license from Splunk Inc. is PROHIBITED.
-
-# Phantom imports
-import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
-
-# Local imports
-from remedyforce_consts import *
-
-import requests
-import simplejson as json
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under
+# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied. See the License for the specific language governing permissions
+# and limitations under the License.
+#
+#
 import re
 from datetime import datetime
+from sys import exit
+
+import phantom.app as phantom
+import requests
+import simplejson as json
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
+from remedyforce_consts import *
 
 
 class RemedyForceConnector(BaseConnector):
@@ -33,7 +40,7 @@ class RemedyForceConnector(BaseConnector):
         super(RemedyForceConnector, self).__init__()
         return
 
-    def _make_rest_call(self, endpoint, action_result, headers={}, params=None, body=None, method="get"):
+    def _make_rest_call(self, endpoint, action_result, headers=None, params=None, body=None, method="get"):
         """ Function that makes the REST call to the device,
             generic function that can be called from various action handlers
         """
@@ -123,7 +130,7 @@ class RemedyForceConnector(BaseConnector):
 
         # Thankfully this is the only SOAP request we need to make
         try:
-            r = requests.post(url, data=body, headers=headers)
+            r = requests.post(url, data=body, headers=headers, timeout=REMEDY_DEFAULT_TIMEOUT)
         except Exception as e:
             return self.set_status_save_progress(phantom.APP_ERROR, e)
 
@@ -214,7 +221,7 @@ class RemedyForceConnector(BaseConnector):
 
         endpoint_note = ENDPOINT_SERVICE + \
             "/{}/clientnote".format(param[REMEDY_JSON_ID])
-        
+
         ret_val, json_resp = self._make_rest_call(endpoint_note, action_result,
                                                   body=body, method="post")
 
@@ -260,6 +267,7 @@ class RemedyForceConnector(BaseConnector):
 if __name__ == '__main__':
     # Imports
     import sys
+
     import pudb
 
     # Breakpoint at runtime
