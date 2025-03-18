@@ -1,6 +1,6 @@
 # File: remedyforce_consts.py
 #
-# Copyright (c) 2016-2024 Splunk Inc.
+# Copyright (c) 2016-2025 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,10 +30,10 @@ ENDPOINT_VERSION = "ServiceUtil/Version"
 ENDPOINT_INCIDENT = "Incident"
 ENDPOINT_SERVICE = "ServiceRequest"
 
-RESP_SUCCESS = 'Success'
-RESP_MESSAGE = 'ErrorMessage'
-RESP_RESULT = 'Result'
-RESP_VERSION = 'Version'
+RESP_SUCCESS = "Success"
+RESP_MESSAGE = "ErrorMessage"
+RESP_RESULT = "Result"
+RESP_VERSION = "Version"
 
 # Login XML to use which is needed to retrieve valid SessionID
 # Note that the username and password fields need added in using
