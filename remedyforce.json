@@ -5,8 +5,8 @@
     "publisher": "Splunk",
     "type": "ticketing",
     "main_module": "remedyforce_connector.py",
-    "app_version": "2.0.5",
-    "utctime_updated": "2025-04-14T20:56:48.747810Z",
+    "app_version": "2.0.6",
+    "utctime_updated": "2025-07-30T17:52:36.570606Z",
     "package_name": "phantom_remedyforce",
     "product_vendor": "BMC Software",
     "product_name": "RemedyForce",
@@ -14,7 +14,10 @@
     "logo_dark": "logo_bmcremedyforce_dark.svg",
     "product_version_regex": ".*",
     "min_phantom_version": "4.9.39220",
-    "python_version": ["3.9", "3.13"],
+    "python_version": [
+        "3.9",
+        "3.13"
+    ],
     "fips_compliant": true,
     "license": "Copyright (c) 2016-2025 Splunk Inc.",
     "latest_tested_versions": [
