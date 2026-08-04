@@ -44,6 +44,7 @@ class RemedyForceConnector(BaseConnector):
         """
 
         # Create the headers
+        headers = dict(headers or {})
         headers.update(self._headers)
 
         resp_json = None
@@ -128,7 +129,7 @@ class RemedyForceConnector(BaseConnector):
         try:
             r = requests.post(url, data=body, headers=headers, timeout=REMEDY_DEFAULT_TIMEOUT)
         except Exception as e:
-            return self.set_status_save_progress(phantom.APP_ERROR, e)
+            return self.set_status_save_progress(phantom.APP_ERROR, str(e))
 
         try:
             session_id = re.search("<sessionId>(.*)</sessionId>", r.text).groups()[0]
@@ -139,7 +140,7 @@ class RemedyForceConnector(BaseConnector):
                 fs = re.search("<faultstring>(.*)</faultstring>", r.text).groups()[0]
                 return self.set_status_save_progress(phantom.APP_ERROR, fs)
             except Exception as e:  # Something else went wrong
-                return self.set_status_save_progress(phantom.APP_ERROR, e)
+                return self.set_status_save_progress(phantom.APP_ERROR, str(e))
 
     def _validate_connection(self, action_result):
         """See if connection is valid and save SessionID"""
