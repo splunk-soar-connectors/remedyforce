@@ -1,5 +1,1 @@
 **Unreleased**
-
-* Restores RemedyForce actions by safely initializing request headers and preserving readable Salesforce login failures.
-
-* Routes RemedyForce API requests to the Salesforce endpoint returned during authentication instead of fixed instance URLs.

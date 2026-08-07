@@ -1,7 +1,7 @@
 # RemedyForce
 
 Publisher: Splunk <br>
-Connector Version: 2.0.7 <br>
+Connector Version: 2.0.8 <br>
 Product Vendor: BMC Software <br>
 Product Name: RemedyForce <br>
 Minimum Product Version: 4.9.39220
