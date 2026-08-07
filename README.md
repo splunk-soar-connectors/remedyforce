@@ -1,9 +1,9 @@
 # RemedyForce
 
-Publisher: Splunk \
-Connector Version: 2.0.7 \
-Product Vendor: BMC Software \
-Product Name: RemedyForce \
+Publisher: Splunk <br>
+Connector Version: 2.0.7 <br>
+Product Vendor: BMC Software <br>
+Product Name: RemedyForce <br>
 Minimum Product Version: 4.9.39220
 
 This app allows ticket management on RemedyForce by implementing generic actions
@@ -20,15 +20,15 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 
 ### Supported Actions
 
-[test connectivity](#action-test-connectivity) - Validates connectivity by retrieving a valid SessionID \
-[create ticket](#action-create-ticket) - Create a ticket (incident) \
+[test connectivity](#action-test-connectivity) - Validates connectivity by retrieving a valid SessionID <br>
+[create ticket](#action-create-ticket) - Create a ticket (incident) <br>
 [update ticket](#action-update-ticket) - Attach a note to a ticket (incident)
 
 ## action: 'test connectivity'
 
 Validates connectivity by retrieving a valid SessionID
 
-Type: **test** \
+Type: **test** <br>
 Read only: **True**
 
 #### Action Parameters
@@ -43,7 +43,7 @@ No Output
 
 Create a ticket (incident)
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -69,7 +69,7 @@ summary.total_objects_successful | numeric | | 1 |
 
 Attach a note to a ticket (incident)
 
-Type: **generic** \
+Type: **generic** <br>
 Read only: **False**
 
 #### Action Parameters
@@ -108,7 +108,7 @@ ______________________________________________________________________
 
 Auto-generated Splunk SOAR Connector documentation.
 
-Copyright 2025 Splunk Inc.
+Copyright 2026 Splunk Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

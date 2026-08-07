@@ -1,6 +1,6 @@
 # File: remedyforce_connector.py
 #
-# Copyright (c) 2016-2025 Splunk Inc.
+# Copyright (c) 2016-2026 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 import re
 from datetime import datetime
 from sys import exit
+from urllib.parse import urlsplit
 
 import phantom.app as phantom
 import requests
@@ -44,6 +45,7 @@ class RemedyForceConnector(BaseConnector):
         """
 
         # Create the headers
+        headers = dict(headers or {})
         headers.update(self._headers)
 
         resp_json = None
@@ -115,10 +117,8 @@ class RemedyForceConnector(BaseConnector):
         # the Endpoint for login call is https://test.salesforce.com/services/Soap/u/35.0
         if not config.get("sandbox", False):
             url = "https://login.salesforce.com/services/Soap/u/35.0"
-            self._base_url = "https://na64.salesforce.com/services/apexrest/BMCServiceDesk/1.0/"
         else:
             url = "https://test.salesforce.com/services/Soap/u/35.0"
-            self._base_url = "https://cs195.salesforce.com/services/apexrest/BMCServiceDesk/1.0/"
 
         headers = {"Content-Type": "text/xml;charset=UTF-8", "SOAPAction": "Login"}
 
@@ -128,10 +128,21 @@ class RemedyForceConnector(BaseConnector):
         try:
             r = requests.post(url, data=body, headers=headers, timeout=REMEDY_DEFAULT_TIMEOUT)
         except Exception as e:
-            return self.set_status_save_progress(phantom.APP_ERROR, e)
+            return self.set_status_save_progress(phantom.APP_ERROR, str(e))
 
         try:
             session_id = re.search("<sessionId>(.*)</sessionId>", r.text).groups()[0]
+            server_url = re.search("<serverUrl>(.*)</serverUrl>", r.text).groups()[0]
+            parsed_server_url = urlsplit(server_url)
+            if (
+                parsed_server_url.scheme.lower() != "https"
+                or not parsed_server_url.hostname
+                or parsed_server_url.username is not None
+                or parsed_server_url.password is not None
+            ):
+                return self.set_status_save_progress(phantom.APP_ERROR, "Salesforce login returned an invalid server URL")
+
+            self._base_url = f"https://{parsed_server_url.netloc}/services/apexrest/BMCServiceDesk/1.0/"
             self._headers["Authorization"] = f"Bearer {session_id}"
             return self.set_status_save_progress(phantom.APP_SUCCESS, "Retrieved SessionID")
         except:
@@ -139,7 +150,7 @@ class RemedyForceConnector(BaseConnector):
                 fs = re.search("<faultstring>(.*)</faultstring>", r.text).groups()[0]
                 return self.set_status_save_progress(phantom.APP_ERROR, fs)
             except Exception as e:  # Something else went wrong
-                return self.set_status_save_progress(phantom.APP_ERROR, e)
+                return self.set_status_save_progress(phantom.APP_ERROR, str(e))
 
     def _validate_connection(self, action_result):
         """See if connection is valid and save SessionID"""
